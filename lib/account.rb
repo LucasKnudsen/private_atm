@@ -10,15 +10,25 @@ class Account
     attr_accessor :account_status
     attr_accessor :pin_code
     attr_accessor :balance
-    def initialize
+    attr_accessor :owner
+    def initialize(attrs = {})
         @balance = 1000
         @exp_date = set_expire_date()
         @account_status = :active
         @pin_code = rand(1000..9999)
+        set_owner(attrs[:owner])
     end
 
     def deactivate
         @account_status = :disabled
+    end
+
+    private
+    def set_owner(obj) 
+        obj == nil ? missing_owner_error : @owner = obj
+    end
+    def missing_owner_error
+        raise 'An Account owner is required'
     end
 
 end
