@@ -9,7 +9,9 @@ class Account
     attr_accessor :exp_date
     attr_accessor :account_status
     attr_accessor :pin_code
+    attr_accessor :balance
     def initialize
+        @balance = 1000
         @exp_date = set_expire_date()
         @account_status = :active
         @pin_code = rand(1000..9999)
