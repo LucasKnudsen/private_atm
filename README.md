@@ -8,8 +8,8 @@ We want to create an automatic mechanism that allows the bank user to withdraw m
 As a bank user
 In order to receive cash
 I would need to create a cash machine.
-*Atm = object*
-*Bank user = object*
+*Atm = class*
+*Bank user = class*
 
 As a bank user
 In order to get cash from the cash machine
