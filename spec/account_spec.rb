@@ -3,8 +3,7 @@ require 'date'
 
 describe Account do
     it 'check the length of PIN code' do
-        number = 1234
-        expect(number.to_s.size).to eq 4
+        expect(subject.pin_code.to_s.size).to eq 4
     end
 
     it 'is expected to have an expiry date on initialize' do
@@ -15,5 +14,10 @@ describe Account do
     it 'is expected to have an account status of active on initialize' do
         expect(subject.account_status).to eq :active
     end
-    
+
+    it 'is expected to disable account status on deactivate method' do
+        subject.deactivate
+        expect(subject.account_status).to eq :disabled
+        # If we use the class method it doesn't affect the instance of the class, which is what we wish.
+    end
 end
