@@ -7,8 +7,10 @@ class Account
     end
 
     attr_accessor :exp_date
+    attr_accessor :account_status
     def initialize
         @exp_date = set_expire_date()
+        @account_status = :active
     end
 
 end
