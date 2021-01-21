@@ -11,6 +11,7 @@ class Account
     attr_accessor :pin_code
     attr_accessor :balance
     attr_accessor :owner
+    
     def initialize(attrs = {})
         @balance = 100
         @exp_date = set_expire_date()

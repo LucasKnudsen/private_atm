@@ -1,4 +1,6 @@
 require 'date'
+require 'pry'
+require './lib/account.rb'
 
 class Person 
 
@@ -12,6 +14,14 @@ class Person
         @account
     end
 
+    public
+
+    def create_account
+        @account = Account.new(owner: @name)
+    end
+
+    private
+
     def set_name(name)
         name == nil ? throw_name_error : @name = name
     end
@@ -19,5 +29,7 @@ class Person
     def throw_name_error
         raise 'A name is required'
     end
+
+
 
 end
