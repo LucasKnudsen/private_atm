@@ -6,11 +6,7 @@ class Account
         Date.today.next_year(STANDARD_VALIDITY_YRS).strftime("%m/%y")
     end
 
-    attr_accessor :exp_date
-    attr_accessor :account_status
-    attr_accessor :pin_code
-    attr_accessor :balance
-    attr_accessor :owner
+    attr_accessor :exp_date, :account_status, :pin_code, :balance, :owner
     
     def initialize(attrs = {})
         @balance = 100

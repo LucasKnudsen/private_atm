@@ -43,7 +43,7 @@ describe Person do
             expect(subject.deposit(100)).to be_truthy
         end
         it 'but doesnt deposit funds if person have insufficient cash' do
-            expected_output = { status: false, message: 'error' }
+            expected_output = { status: false, message: 'Not enough cash', date: Date.today }
             expect(subject.deposit(250)).to eq expected_output
         end
 
@@ -52,6 +52,17 @@ describe Person do
             subject.deposit(100)
             expect(subject.account.balance).to eq 200
             expect(subject.cash).to eq 0
+        end
+
+        it 'can withdraw funds' do
+            subject.cash = 0
+            subject.withdraw(100,subject.account.pin_code, subject.account, atm: atm)
+            expect(subject.cash).to eq 100
+        end
+
+        it 'can withdraw funds' do
+            withdraw_command = lambda { subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm) }
+            expect(withdraw_command.call).to be_truthy
         end
     end
 
