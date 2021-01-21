@@ -1,6 +1,7 @@
 require 'date'
 require 'pry'
 require './lib/account.rb'
+require './lib/atm.rb'
 
 class Person 
 
@@ -21,13 +22,23 @@ class Person
     end
 
     def deposit(amount)
-        @account == nil ? throw_account_error : @account.balance += amount
+        if @account == nil
+            throw_account_error
+        elsif @cash < amount 
+            throw_cash_error
+        else
+            @account.balance += amount
+            @cash -= amount
+        end
     end
 
     private
 
     def throw_account_error
         raise 'No account present'
+    end
+    def throw_cash_error
+        { status: false, message: 'error' }
     end
     def set_name(name)
         name == nil ? throw_name_error : @name = name

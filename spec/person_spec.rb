@@ -34,9 +34,17 @@ describe Person do
 
     describe 'can manage funds if an account been created' do
         let(:atm) { Atm.new }
-        before { subject.create_account }
+        before do
+            subject.create_account
+            subject.cash = 100 
+        end
+        
         it 'can deposit funds' do
             expect(subject.deposit(100)).to be_truthy
+        end
+        it 'but doesnt deposit funds if person have insufficient cash' do
+            expected_output = { status: false, message: 'error' }
+            expect(subject.deposit(250)).to eq expected_output
         end
     end
 
