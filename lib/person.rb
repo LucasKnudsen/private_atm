@@ -20,8 +20,15 @@ class Person
         @account = Account.new(owner: @name)
     end
 
+    def deposit(amount)
+        @account == nil ? throw_account_error : @account.balance += amount
+    end
+
     private
 
+    def throw_account_error
+        raise 'No account present'
+    end
     def set_name(name)
         name == nil ? throw_name_error : @name = name
     end
