@@ -46,12 +46,22 @@ describe Person do
             expected_output = { status: false, message: 'error' }
             expect(subject.deposit(250)).to eq expected_output
         end
+
+        it 'funds are added to the account balance and deducted from cash' do
+            subject.cash = 100
+            subject.deposit(100)
+            expect(subject.account.balance).to eq 200
+            expect(subject.cash).to eq 0
+        end
     end
 
     describe 'can manage funds if no account been created' do
         it 'cant deposit funds' do
             expect { subject.deposit(100) }.to raise_error(RuntimeError, 'No account present')
         end
+
+
     end
+
 
 end
