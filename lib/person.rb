@@ -38,17 +38,15 @@ class Person
 
     def add_cash(amount)
         @cash += amount
-        @account.balance -= amount
     end
     
     def withdraw_func(args)
-        args[:atm] == nil ? throw_atm_error : atm = args[:atm]
+        args[:atm] == nil ? throw_atm_error : atm = Atm.new
         account = @account
         amount = args[:amount]
         pin = args[:pin_code]
-        add_cash(args[:amount])
-        #response = atm.withdraw(amount, pin, account)
-        #response[:status] == true ? add_cash(args[:amount]) : response
+        response = atm.withdraw(amount, pin, account)
+        response[:status] == true ? add_cash(args[:amount]) : response
     end
 
     def throw_account_error

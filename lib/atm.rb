@@ -11,7 +11,7 @@ class Atm
         when insufficient_funds_in_account?(amount, account)
             { status: false, message: 'insufficient funds', date: Date.today }
 
-        when incorrect_pin?(pin_code)
+        when incorrect_pin?(pin_code, account)
             { status: false, message: 'wrong PIN code', date: Date.today }
 
         when card_expired?(account.exp_date)
@@ -28,24 +28,24 @@ class Atm
         end
     end
 
-    private
-
     def insufficient_funds_in_account?(amount, account)
         amount > account.balance 
     end
     
     def perform_transaction(amount,account)
-        @funds = @funds - amount
+        @funds -= amount
         account.balance = account.balance - amount
-        return { status: true, message: 'success', date: Date.today, amount: amount, bills: count_bills(amount)}
+        { status: true, message: 'success', date: Date.today, amount: amount, bills: count_bills(amount)}
     end
+
+    private
 
     def insufficient_funds_in_atm?(amount)
         amount > @funds
     end
 
-    def incorrect_pin?(pin_code)
-        pin_code != '1234'
+    def incorrect_pin?(pin_code, account)
+        pin_code != account.pin_code
     end
 
     def card_expired?(exp_date)
