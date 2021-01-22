@@ -10,7 +10,7 @@ class Person
     def initialize(attrs = {})
         set_name(attrs[:name])
         @cash = 0
-        @account
+        @account = nil
     end
 
     public
@@ -30,19 +30,25 @@ class Person
         end
     end
 
-    def withdraw(*args)
-        @account == nil ? throw_account_error : withdraw_func(*args)
+    def withdraw(args = {})
+        @account == nil ? throw_account_error : withdraw_func(args)
     end
 
     private
 
-    def withdraw_func(*args)
+    def add_cash(amount)
+        @cash += amount
+        @account.balance -= amount
+    end
+    
+    def withdraw_func(args)
         args[:atm] == nil ? throw_atm_error : atm = args[:atm]
         account = @account
         amount = args[:amount]
         pin = args[:pin_code]
-        response = atm.withdraw(amount, pin, account)
-        response[:status] == true ? cash += args[:amount] : response
+        add_cash(args[:amount])
+        #response = atm.withdraw(amount, pin, account)
+        #response[:status] == true ? add_cash(args[:amount]) : response
     end
 
     def throw_account_error

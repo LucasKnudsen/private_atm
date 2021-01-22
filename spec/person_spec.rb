@@ -6,7 +6,7 @@ describe Person do
     subject { described_class.new(name: 'Noel') }
     
     it 'is expected to have a :name on initialize' do
-        expect(subject.name).to eq 'Noel'
+        expect(subject.name).not_to be nil
     end
 
     it 'is expected to throw error if no name on initialize' do
@@ -28,15 +28,14 @@ describe Person do
         end
 
         it 'with himself as an owner' do
-            expect(subject.account.owner).to eq subject.name
+            expect(subject.account.owner).to eq subject
         end
     end
 
     describe 'can manage funds if an account been created' do
         let(:atm) { Atm.new }
-        before do
-            subject.create_account
-        end
+        before { subject.create_account }
+        
         
         it 'can deposit funds' do
             expect(subject.deposit(100)).to be_truthy
@@ -54,8 +53,22 @@ describe Person do
         end
 
         it 'can withdraw funds' do
-            command = lambda { subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm) }
-            expect(command.call).to be_truthy
+            withdraw_command = -> { subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm) }
+            expect(withdraw_command.call).to be_truthy
+        end
+
+        it 'withdraw is expected to raise an error if no ATM is passed in' do
+            withdraw_command = -> { subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account) }
+            expect {withdraw_command.call}.to raise_error 'Need ATM to withdraw money'
+        end
+
+        it 'funds are added to cash - deducted from account balance' do
+            subject.cash = 100
+            subject.deposit(100)
+            subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm)
+            expect(subject.account.balance).to eq 100
+            expect(subject.cash).to eq 100
+            
         end
     end
 
