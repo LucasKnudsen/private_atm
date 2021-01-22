@@ -27,6 +27,7 @@ class Person
         else
             @account.balance += amount
             @cash -= amount
+            { status: true, message: 'Deposit was successful', amount: amount, date: Date.today }
         end
     end
 
@@ -41,7 +42,7 @@ class Person
     end
     
     def withdraw_func(args)
-        args[:atm] == nil ? throw_atm_error : atm = Atm.new
+        args[:atm] == nil ? throw_atm_error : atm = args[:atm]
         account = @account
         amount = args[:amount]
         pin = args[:pin_code]
