@@ -38,18 +38,20 @@ describe Person do
         
         
         it 'can deposit funds' do
-            expect(subject.deposit(100)).to be_truthy
-        end
-        it 'but doesnt deposit funds if person have insufficient cash' do
-            expected_output = { status: false, message: 'Not enough cash', date: Date.today }
-            expect(subject.deposit(150)).to eq expected_output
+            expect(subject.deposit(amount: 100, atm: atm)).to be_truthy
         end
 
-        it 'funds are added to the account balance and deducted from cash' do
+        it 'but doesnt deposit funds if person have insufficient cash' do
+            expected_output = { status: false, message: 'Not enough cash', date: Date.today }
+            expect(subject.deposit(amount: 150, atm: atm)).to eq expected_output
+        end
+
+        it 'funds are added to the account balance and deducted from cash and Atm funds' do
             subject.cash = 100
-            subject.deposit(100)
+            subject.deposit(amount: 100, atm: atm)
             expect(subject.account.balance).to eq 200
             expect(subject.cash).to eq 0
+            expect(atm.funds).to eq 1100
         end
 
         it 'can withdraw funds' do
@@ -64,7 +66,7 @@ describe Person do
 
         it 'funds are added to cash - deducted from account balance' do
             subject.cash = 100
-            subject.deposit(100)
+            subject.deposit(amount: 100, atm: atm)
             subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm)
             expect(subject.account.balance).to eq 100
             expect(subject.cash).to eq 100
@@ -74,7 +76,7 @@ describe Person do
 
     describe 'can manage funds if no account been created' do
         it 'cant deposit funds' do
-            expect { subject.deposit(100) }.to raise_error(RuntimeError, 'No account present')
+            expect { subject.deposit(amount: 100) }.to raise_error(RuntimeError, 'No account present')
         end
 
 

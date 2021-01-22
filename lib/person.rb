@@ -19,15 +19,13 @@ class Person
         @account = Account.new(owner: self)
     end
 
-    def deposit(amount)
+    def deposit(args = {})
         if @account == nil
             throw_account_error
-        elsif @cash < amount 
+        elsif @cash < args[:amount] 
             throw_cash_error
         else
-            @account.balance += amount
-            @cash -= amount
-            { status: true, message: 'Deposit was successful', amount: amount, date: Date.today }
+            deposit_func(args)
         end
     end
 
@@ -39,6 +37,15 @@ class Person
 
     def add_cash(amount)
         @cash += amount
+    end
+
+    def deposit_func(args)
+        args[:atm] == nil ? throw_atm_error : atm = args[:atm]
+        amount = args[:amount]
+        @account.balance += amount
+        @cash -= amount
+        atm.funds += amount
+        { status: true, message: 'Deposit was successful', amount: amount, date: Date.today }
     end
     
     def withdraw_func(args)
