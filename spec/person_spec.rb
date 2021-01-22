@@ -36,7 +36,6 @@ describe Person do
         let(:atm) { Atm.new }
         before do
             subject.create_account
-            subject.cash = 100 
         end
         
         it 'can deposit funds' do
@@ -44,7 +43,7 @@ describe Person do
         end
         it 'but doesnt deposit funds if person have insufficient cash' do
             expected_output = { status: false, message: 'Not enough cash', date: Date.today }
-            expect(subject.deposit(250)).to eq expected_output
+            expect(subject.deposit(150)).to eq expected_output
         end
 
         it 'funds are added to the account balance and deducted from cash' do
@@ -55,14 +54,8 @@ describe Person do
         end
 
         it 'can withdraw funds' do
-            subject.cash = 0
-            subject.withdraw(100,subject.account.pin_code, subject.account, atm: atm)
-            expect(subject.cash).to eq 100
-        end
-
-        it 'can withdraw funds' do
-            withdraw_command = lambda { subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm) }
-            expect(withdraw_command.call).to be_truthy
+            command = lambda { subject.withdraw(amount: 100, pin_code: subject.account.pin_code, account: subject.account, atm: atm) }
+            expect(command.call).to be_truthy
         end
     end
 
