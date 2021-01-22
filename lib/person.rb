@@ -47,6 +47,7 @@ class Person
         pin = args[:pin_code]
         response = atm.withdraw(amount, pin, account)
         response[:status] == true ? add_cash(args[:amount]) : response
+        response
     end
 
     def throw_account_error

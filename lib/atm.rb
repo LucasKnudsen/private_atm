@@ -29,6 +29,8 @@ class Atm
         end
     end
 
+    private
+
     def insufficient_funds_in_account?(amount, account)
         amount > account.balance 
     end
@@ -38,8 +40,6 @@ class Atm
         account.balance = account.balance - amount
         { status: true, message: 'success', date: Date.today, amount: amount, bills: count_bills(amount)}
     end
-
-    private
 
     def insufficient_funds_in_atm?(amount)
         amount > @funds
