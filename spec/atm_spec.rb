@@ -51,4 +51,9 @@ describe Atm do
         expect(subject.withdraw(50, '1234', account)).to eq expected_output
     end
 
+    it 'rejects transaction if the amount is not divisible by 5' do
+        expected_output = { status: false, message: 'amount not divisible by 5', date: Date.today }
+        expect(subject.withdraw(7, '1234', account)).to eq expected_output
+    end
+
 end
